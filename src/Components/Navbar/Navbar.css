@@ -1,0 +1,16 @@
+.navbarContainer {
+  text-align: center;
+}
+.ulContainer {
+  display: flex;
+}
+
+.ulContainer a {
+  text-decoration: none;
+  list-style-type: none;
+  margin-left: 22px;
+}
+
+.ulContainer li {
+  list-style-type: none;
+}
