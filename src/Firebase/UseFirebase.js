@@ -3,12 +3,14 @@ import {
   getAuth,
   GithubAuthProvider,
   GoogleAuthProvider,
+  onAuthStateChanged,
   sendEmailVerification,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
   updateProfile,
 } from "firebase/auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import app from "./firebase.init";
 
 const googleProvider = new GoogleAuthProvider();
@@ -30,6 +32,17 @@ const UseFirebase = () => {
         const errorMessage = error.message;
         setErrorMsg(errorMessage);
         console.log(errorMessage);
+      });
+  };
+
+  const signOutNow = () => {
+    signOut(auth)
+      .then(() => {
+        setSignedInUser({});
+        setErrorMsg("");
+      })
+      .catch((error) => {
+        setErrorMsg(error);
       });
   };
 
@@ -57,11 +70,11 @@ const UseFirebase = () => {
     });
   };
 
-  const signUpWithEmailPass = (email, password, name, phoneNumber) => {
+  const signUpWithEmailPass = (email, password, name) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-
+        setSignedInUser(user);
         EmailVerification();
         updateUserProfile(name);
 
@@ -89,8 +102,15 @@ const UseFirebase = () => {
       });
   };
 
+  useEffect(() => {
+    onAuthStateChanged(auth, (signedInUser) => {
+      setSignedInUser(signedInUser);
+    });
+  }, []);
+
   return {
     signInWithGoogle,
+    signOutNow,
     signedInUser,
     errorMsg,
     signInWithGithub,

@@ -7,7 +7,7 @@ const SignInByOneClick = () => {
   return (
     <div className="signInContainer">
       <h1>This is a One Click Sign In Component</h1>
-      {signedInUser.email && (
+      {signedInUser?.email && (
         <div>
           <h2>
             Hey? You are currently signed In as {signedInUser.displayName}
